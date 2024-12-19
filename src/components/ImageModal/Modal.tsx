@@ -3,10 +3,7 @@ import { FaTimes } from 'react-icons/fa';
 import css from './Modal.module.css';
 
 interface ImageModalProps {
-  image: {
-    urls: { full: string };
-    alt_description: string;
-  };
+  image: ImageItem;
   isOpen: boolean;
   closeModal: () => void;
 }
