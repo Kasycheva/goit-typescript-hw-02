@@ -7,26 +7,26 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import Loader from './components/Loader/Loader';
 import ImageModal from './components/ImageModal/Modal';
 
-interface Image {
+interface ImageItem {
   id: string;
   urls: {
     regular: string;
     full: string;
   };
   alt_description: string;
-  user: { name: string };
+  user: string;
   likes: number;
 }
 
 function App() {
-  const [images, setImages] = useState<Image[]>([]);
+  const [images, setImages] = useState<ImageItem[]>([]);
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalImage, setModalImage] = useState<Image | null>(null);
+  const [modalImage, setModalImage] = useState<ImageItem | null>(null);
 
   const fetchImages = async () => {
     setLoading(true);
@@ -41,7 +41,7 @@ function App() {
             full: photo.urls.full,
           },
           alt_description: photo.alt_description || 'Image',
-          user: { name: photo.user.name },
+          user: photo.user.name,
           likes: photo.likes,
         }));
         setImages((prevImages) => [...prevImages, ...formattedData]);
@@ -66,7 +66,7 @@ function App() {
     if (hasMore) setPage((prevPage) => prevPage + 1);
   };
 
-  const openModal = (image: Image) => {
+  const openModal = (image: ImageItem) => {
     setModalImage(image);
     setIsModalOpen(true);
   };
