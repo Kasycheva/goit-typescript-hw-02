@@ -4,13 +4,14 @@ import css from './Modal.module.css';
 
 interface ImageModalProps {
   image: {
-    urls: {
-      full: string;
-    };
-  } | null;
+    urls: { full: string };
+    alt_description: string;
+  };
   isOpen: boolean;
   closeModal: () => void;
 }
+
+Modal.setAppElement('#root');
 
 const ImageModal: React.FC<ImageModalProps> = ({ image, isOpen, closeModal }) => {
   if (!image) return null;
@@ -23,18 +24,10 @@ const ImageModal: React.FC<ImageModalProps> = ({ image, isOpen, closeModal }) =>
       className={css.modal}
       overlayClassName={css.overlay}
     >
-      <button
-        className={css.closeBtn}
-        onClick={closeModal}
-        aria-label="Close Modal"
-      >
+      <button className={css.closeBtn} onClick={closeModal}>
         <FaTimes />
       </button>
-      <img
-        src={image.urls.full}
-        alt="Selected"
-        className={css.modalImage}
-      />
+      <img src={image.urls.full} alt={image.alt_description} className={css.modalImage} />
     </Modal>
   );
 };

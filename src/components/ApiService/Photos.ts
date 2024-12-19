@@ -9,14 +9,19 @@ axios.defaults.params = {
 };
 
 export interface Photo {
-  alt_description?: string;
-  urls: { regular: string; full: string };
   id: string;
-  user?: string;
-  likes?: number;
+  urls: {
+    regular: string;
+    full: string;
+  };
+  alt_description: string | null;
+  user: {
+    name: string;
+  };
+  likes: number;
 }
 
-export const getPhotos = async (query: string, page: number): Promise<{ results: Photo[] }> => {
+export const getPhotos = async (query: string, page: number = 1) => {
   const { data } = await axios.get<{ results: Photo[] }>('search/photos', {
     params: { query, page },
   });

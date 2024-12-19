@@ -1,28 +1,31 @@
 import { useState, useEffect } from 'react';
 import SearchBar from './components/SearchBar/SearchBar';
 import ImageGallery from './components/ImageGallery/ImageGallery';
-import { getPhotos } from './components/ApiService/Photos';
+import { getPhotos, Photo } from './components/ApiService/Photos';
 import LoadMoreBtn from './components/LoadMoreBtn/LoadMoreBtn';
 import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import Loader from './components/Loader/Loader';
 import ImageModal from './components/ImageModal/Modal';
 
 interface Image {
-  alt_description: string;
-  urls: { regular: string; full: string };
   id: string;
-  user: string;
+  urls: {
+    regular: string;
+    full: string;
+  };
+  alt_description: string;
+  user: { name: string };
   likes: number;
 }
 
-const App: React.FC = () => {
+function App() {
   const [images, setImages] = useState<Image[]>([]);
-  const [query, setQuery] = useState<string>('');
-  const [page, setPage] = useState<number>(1);
-  const [loading, setLoading] = useState<boolean>(false);
-  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [query, setQuery] = useState('');
+  const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalImage, setModalImage] = useState<Image | null>(null);
 
   const fetchImages = async () => {
@@ -30,20 +33,23 @@ const App: React.FC = () => {
     setError(null);
     try {
       const data = await getPhotos(query, page);
-      if (data && Array.isArray(data.results)) {
-        const formattedResults = data.results.map((result) => ({
-          alt_description: result.alt_description || '',
-          urls: { regular: result.urls.regular, full: result.urls.full },
-          id: result.id,
-          user: result.user || '',
-          likes: result.likes || 0,
+      if (data && data.results.length > 0) {
+        const formattedData = data.results.map((photo: Photo) => ({
+          id: photo.id,
+          urls: {
+            regular: photo.urls.regular,
+            full: photo.urls.full,
+          },
+          alt_description: photo.alt_description || 'Image',
+          user: { name: photo.user.name },
+          likes: photo.likes,
         }));
-        setImages((prevImages) => [...prevImages, ...formattedResults]);
+        setImages((prevImages) => [...prevImages, ...formattedData]);
         setHasMore(data.results.length > 0);
       } else {
         setHasMore(false);
       }
-    } catch {
+    } catch (err) {
       setError('Failed to load images. Please try again.');
     } finally {
       setLoading(false);
@@ -57,9 +63,7 @@ const App: React.FC = () => {
   }, [query, page]);
 
   const handleLoadMore = () => {
-    if (hasMore) {
-      setPage((prevPage) => prevPage + 1);
-    }
+    if (hasMore) setPage((prevPage) => prevPage + 1);
   };
 
   const openModal = (image: Image) => {
@@ -94,6 +98,6 @@ const App: React.FC = () => {
       )}
     </div>
   );
-};
+}
 
 export default App;
