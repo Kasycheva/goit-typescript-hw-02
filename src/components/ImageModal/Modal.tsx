@@ -1,14 +1,15 @@
 import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import css from './Modal.module.css';
+import { ImageItem } from '../App'; 
+
+Modal.setAppElement('#root');
 
 interface ImageModalProps {
   image: ImageItem;
   isOpen: boolean;
   closeModal: () => void;
 }
-
-Modal.setAppElement('#root');
 
 const ImageModal: React.FC<ImageModalProps> = ({ image, isOpen, closeModal }) => {
   if (!image) return null;
