@@ -31,7 +31,14 @@ const App: React.FC = () => {
     try {
       const data = await getPhotos(query, page);
       if (data && Array.isArray(data.results)) {
-        setImages((prevImages) => [...prevImages, ...data.results]);
+        const formattedResults = data.results.map((result) => ({
+          alt_description: result.alt_description || '',
+          urls: { regular: result.urls.regular, full: result.urls.full },
+          id: result.id,
+          user: result.user || '',
+          likes: result.likes || 0,
+        }));
+        setImages((prevImages) => [...prevImages, ...formattedResults]);
         setHasMore(data.results.length > 0);
       } else {
         setHasMore(false);

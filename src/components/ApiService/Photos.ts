@@ -8,25 +8,17 @@ axios.defaults.params = {
   per_page: 15,
 };
 
-interface Photo {
+export interface Photo {
+  alt_description?: string;
+  urls: { regular: string; full: string };
   id: string;
-  urls: {
-    regular: string;
-    full: string;
-  };
-  alt_description: string;
+  user?: string;
+  likes?: number;
 }
 
-interface ApiResponse {
-  results: Photo[];
-}
-
-export const getPhotos = async (query: string, page: number): Promise<ApiResponse> => {
-  const { data } = await axios.get<ApiResponse>('search/photos', {
-    params: {
-      query,
-      page,
-    },
+export const getPhotos = async (query: string, page: number): Promise<{ results: Photo[] }> => {
+  const { data } = await axios.get<{ results: Photo[] }>('search/photos', {
+    params: { query, page },
   });
   return data;
 };
