@@ -1,17 +1,10 @@
+import { ImageItem } from '../../App';  
 import css from './ImageGallery.module.css';
 import ImageCard from '../ImageCard/ImageCard';
 
-interface Image {
-  alt_description: string;
-  urls: { regular: string };
-  id: string;
-  user: string;
-  likes: number;
-}
-
 interface ImageGalleryProps {
-  images: Image[];
-  openModal: (image: Image) => void;
+  images: ImageItem[];  
+  openModal: (image: ImageItem) => void;  
 }
 
 const ImageGallery: React.FC<ImageGalleryProps> = ({ images, openModal }) => {

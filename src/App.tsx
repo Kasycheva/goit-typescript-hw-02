@@ -7,7 +7,7 @@ import ErrorMessage from './components/ErrorMessage/ErrorMessage';
 import Loader from './components/Loader/Loader';
 import ImageModal from './components/ImageModal/Modal';
 
-interface ImageItem {
+export interface ImageItem {  // Экспортируем ImageItem
   id: string;
   urls: {
     regular: string;

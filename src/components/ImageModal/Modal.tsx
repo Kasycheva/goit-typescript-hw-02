@@ -1,7 +1,9 @@
 import Modal from 'react-modal';
 import { FaTimes } from 'react-icons/fa';
 import css from './Modal.module.css';
-import { ImageItem } from '../App'; 
+import { ImageItem } from '../../App';  
+
+
 
 Modal.setAppElement('#root');
 
