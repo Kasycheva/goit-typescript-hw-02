@@ -8,15 +8,14 @@ import Loader from './components/Loader/Loader';
 import ImageModal from './components/ImageModal/Modal';
 
 interface Image {
-  id: string;
-  urls: {
-    regular: string;
-    full: string;
-  };
   alt_description: string;
+  urls: { regular: string; full: string };
+  id: string;
+  user: string;
+  likes: number;
 }
 
-function App() {
+const App: React.FC = () => {
   const [images, setImages] = useState<Image[]>([]);
   const [query, setQuery] = useState<string>('');
   const [page, setPage] = useState<number>(1);
@@ -31,13 +30,13 @@ function App() {
     setError(null);
     try {
       const data = await getPhotos(query, page);
-      if (data.results.length > 0) {
+      if (data && Array.isArray(data.results)) {
         setImages((prevImages) => [...prevImages, ...data.results]);
         setHasMore(data.results.length > 0);
       } else {
         setHasMore(false);
       }
-    } catch (error) {
+    } catch {
       setError('Failed to load images. Please try again.');
     } finally {
       setLoading(false);
@@ -88,6 +87,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

@@ -1,26 +1,37 @@
 import css from './ImageGallery.module.css';
-import ImageCard from '../ImageCard/ImageCard'; 
+import ImageCard from '../ImageCard/ImageCard';
 
-const ImageGallery = ({ images, openModal }) => {
-    const imageList = Array.isArray(images) ? images : [];
+interface Image {
+  alt_description: string;
+  urls: { regular: string };
+  id: string;
+  user: string;
+  likes: number;
+}
 
-    return (
-        <ul className={css.gallery}>
-            {imageList.map(({ alt_description, urls, id, user, likes }) => (
-                <li 
-                    key={id} 
-                    className={css.galleryItem} 
-                    onClick={() => openModal({ alt_description, urls, user, likes })}
-                >
-                    <ImageCard 
-                        src={urls.regular} 
-                        alt={alt_description} 
-                        avgColor={urls.regular}
-                    />
-                </li>
-            ))}
-        </ul>
-    );
+interface ImageGalleryProps {
+  images: Image[];
+  openModal: (image: Image) => void;
+}
+
+const ImageGallery: React.FC<ImageGalleryProps> = ({ images, openModal }) => {
+  return (
+    <ul className={css.gallery}>
+      {images.map((image) => (
+        <li
+          key={image.id}
+          className={css.galleryItem}
+          onClick={() => openModal(image)}
+        >
+          <ImageCard
+            src={image.urls.regular}
+            alt={image.alt_description}
+            avgColor={image.urls.regular}
+          />
+        </li>
+      ))}
+    </ul>
+  );
 };
 
 export default ImageGallery;

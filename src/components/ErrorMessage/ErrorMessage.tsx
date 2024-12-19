@@ -1,9 +1,11 @@
-const ErrorMessage = () => {
-    return (
-      <div style={{ color: 'red', fontSize: '18px', textAlign: 'center' }}>
-        <p>Oops! Something went wrong. Please try again later.</p>
-      </div>
-    );
-  };
-  
-  export default ErrorMessage;
+interface ErrorMessageProps {
+  message: string;
+}
+
+const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => (
+  <div style={{ color: 'red', fontSize: '18px', textAlign: 'center' }}>
+    <p>{message}</p>
+  </div>
+);
+
+export default ErrorMessage;
